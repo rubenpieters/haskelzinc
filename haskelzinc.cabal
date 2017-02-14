@@ -44,6 +44,8 @@ stability:           provisional
 category:            Interfaces
 
 build-type:          Simple
+	
+tested-with:         GHC==7.10.3
 
 -- Extra files to be distributed with the package, such as examples or a 
 -- README.
@@ -52,6 +54,9 @@ extra-source-files:  changelog, README.md, test.hs
 -- Constraint on the version of Cabal needed to build this package.
 cabal-version:       >=1.10
 
+source-repository head
+  type:              git
+  location:          https://github.com/GRACeFUL-project/haskelzinc.git
 
 library
   -- Modules exported by the library.
@@ -78,3 +83,15 @@ library
   -- Base language which the package is written in.
   default-language:    Haskell2010
   
+test-suite spec
+  type:
+      exitcode-stdio-1.0
+  ghc-options:
+      -Wall
+  hs-source-dirs:
+      test
+  main-is:
+      Spec.hs
+  build-depends:
+      base >=4.8 && <5
+    , hspec   == 2.*
