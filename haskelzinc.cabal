@@ -94,4 +94,7 @@ test-suite spec
       Spec.hs
   build-depends:
       base >=4.8 && <5
+    , haskelzinc
     , hspec   == 2.*
+    , QuickCheck
+    , derive
