@@ -16,6 +16,8 @@ human friendly interface is provided in "Interfaces.MZAST".
 Enumerated types are not supported yet.
 -}
 
+{-# LANGUAGE DeriveGeneric #-}
+
 module Interfaces.MZASTBase (
   MZModel,
   -- * Items representation
@@ -40,6 +42,8 @@ module Interfaces.MZASTBase (
   Ident,
   Filename
 ) where 
+
+import GHC.Generics (Generic)
 
 -- | An abbreviation for the type of a represented MiniZinc model.
 type MZModel = [Item]
@@ -73,12 +77,12 @@ data Item
   -- in the MiniZinc code.
   | Empty
   -}
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic)
 
 -- | Represents a MiniZinc expression (first argument) annotated with the annotations 
 -- contained in the list of the second argument.
 data AnnExpr = AnnExpr Expr [Annotation]
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic)
 
 -- | Transforms an 'Expr' to an 'AnnExpr' with an empty list of annotations.
 toSimpleExpr :: Expr -> AnnExpr
@@ -91,7 +95,7 @@ stripExprOff (AnnExpr e ans) = e
 -- | Represents a complete variable, predicate, test or function declaration with a list
 -- of annotations (possibly empty) and maybe a body.
 data Declaration = Declaration DeclarationSignature [Annotation] (Maybe AnnExpr)
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic)
 
 -- | Used for the representation of the signature of a variable, function, predicate, test
 -- or annotation declaration.
@@ -100,7 +104,7 @@ data DeclarationSignature = Variable Param
                           | Test Ident [Param]
                           | Function Param [Param]
                           | Annotation' Ident [Param]
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic)
 
 -- | The type of a MiniZinc expression's representation.
 data Expr
@@ -156,7 +160,7 @@ data Expr
   | Let [Item] Expr
   -- | A generator call expression.
   | GenCall Ident CompTail Expr 
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic)
 
 -- | The type of a MiniZinc's type representation.
 data Type
@@ -186,11 +190,11 @@ data Type
   -}
   -- | Type variable
   | VarType Ident
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic)
 
 -- | Represents an operator name/symbol in MiniZinc.
 newtype Op = Op Ident
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic)
 
 -- | Transforms an operator to a quoted operator (which, in MiniZinc admits prefix 
 -- notation). One can represent the application of a quoted operator though the 'Call'
@@ -201,25 +205,25 @@ prefixOp (Op op) = "`" ++ op ++ "`"
 -- | Used in annotations' arguments, which can be either annotations or expressions.
 data GArguments = A Annotation
                 | E Expr
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic)
 
 -- | Represents a call to a MiniZinc annotation. First argument represents the 
 -- annotation\'s name and second argument contains the annotation's arguments, if any.
 data Annotation = Annotation Ident [GArguments]
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic)
 
 -- | The type of a MiniZinc instantiation representation.
 data Inst
   = Par -- ^ A @par@ instantiation in MiniZinc.
   | Dec -- ^ A @var@ instantiation in MiniZinc.
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic)
 
 -- | The type for representing the three different kinds of solve items. 
 data Solve
   = Satisfy [Annotation]
   | Minimize [Annotation] Expr
   | Maximize [Annotation] Expr
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic)
 
 type CompTail = ([Generator], Maybe Expr)
 
