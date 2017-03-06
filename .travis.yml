@@ -24,6 +24,10 @@ addons:
   apt:
     packages:
       - libgmp-dev
+      # for generic-random
+      - libblas-dev
+      - libatlas-dev
+      - liblapack-dev
 
 before_install:
 # Download and unpack the stack executable
